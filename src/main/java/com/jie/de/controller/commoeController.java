@@ -3,7 +3,7 @@ package com.jie.de.controller;
 import com.jie.de.exception.UnauthorizedAccessException;
 import com.jie.de.model.dto.LoginDTO;
 import com.jie.de.model.dto.LoginResponseDTO;
-import com.jie.de.service.Auth.AuthService;
+import com.jie.de.security.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
