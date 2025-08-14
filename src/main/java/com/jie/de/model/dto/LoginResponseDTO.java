@@ -2,10 +2,10 @@ package com.jie.de.model.dto;
 
 public class LoginResponseDTO {
 
-    public String token;
-    public String message;
-    public String username;
-    public Long userId;
+    private String token;
+    private String message;
+    private String username;
+    private Long userId;
 
     public LoginResponseDTO(String token, String message, String username, Long userId) {
         this.token = token;
