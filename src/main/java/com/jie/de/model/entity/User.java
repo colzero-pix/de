@@ -3,6 +3,7 @@ package com.jie.de.model.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "user")
@@ -10,8 +11,11 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @NotNull(message = "师生号不能为空")
     @Column(name = "user_id")
-    private long userId;
+    private Long userId;
 
     @NotBlank(message = "用户名不能为空")
     @Column(name = "username", nullable = false)
@@ -24,22 +28,39 @@ public class User {
     @Column(name = "role")
     private String role;
 
-    public User(long userId, String username, String password, String role) {
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "phone")
+    private String phone;
+
+    public User(long id, long userId, String username, String password, String role, String email, String phone) {
+        this.id = id;
         this.userId = userId;
         this.username = username;
         this.password = password;
         this.role = role;
+        this.email = email;
+        this.phone = phone;
     }
 
     public User() {
 
     }
 
-    public long getUserId() {
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId){
+    public void setUserId(Long userId){
         this.userId = userId;
     }
 
@@ -67,12 +88,30 @@ public class User {
         this.role = role;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @Override
     public String toString() {
         return "User: \n" +
                 "UserId=" + userId + "\n" +
                 "username=" + username + "\n" +
                 "password=" + password + "\n" +
-                "role=" + role;
+                "role=" + role + "\n" +
+                "email=" + email + "\n" +
+                "phone=" + phone;
     }
 }

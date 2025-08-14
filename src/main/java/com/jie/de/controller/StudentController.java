@@ -1,25 +1,33 @@
 package com.jie.de.controller;
 
-import com.jie.de.model.dto.StudentLoginDTO;
-import com.jie.de.repository.StudentRepository;
+import com.jie.de.model.dto.InfoChangeDTO;
+import com.jie.de.security.AuthService;
+import com.jie.de.service.common.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/student")
 public class StudentController {
 
     @Autowired
-    private StudentRepository studentRepository;
+    private UserServiceImpl userServiceImpl;
 
-//    @PostMapping("/login")
-//    public ResponseEntity<?> Login(@RequestBody StudentLoginDTO studentLoginDTO) {
-//
-//
-//    }
+    @Autowired
+    private AuthService authService;
+
+    @GetMapping("/studentInfo/{userId}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> getUserInfo(@PathVariable(name = "userId") Long userId) throws Exception {
+        return userServiceImpl.getUserInfo(userId);
+    }
+
+    @PutMapping("/studentInfoChange/{userId}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> updateUserInfo(@PathVariable(name = "userId") Long id,@RequestBody InfoChangeDTO infoChangeDTO) {
+        return userServiceImpl.changeUserInfo(id, infoChangeDTO);
+    }
 
 }

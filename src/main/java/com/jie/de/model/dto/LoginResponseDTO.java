@@ -5,9 +5,9 @@ public class LoginResponseDTO {
     public String token;
     public String message;
     public String username;
-    public long userId;
+    public Long userId;
 
-    public LoginResponseDTO(String token, String message, String username, long userId) {
+    public LoginResponseDTO(String token, String message, String username, Long userId) {
         this.token = token;
         this.message = message;
         this.username = username;
@@ -26,7 +26,7 @@ public class LoginResponseDTO {
         return this.message;
     }
 
-    public long getUserId() {
+    public Long getUserId() {
         return this.userId;
     }
 

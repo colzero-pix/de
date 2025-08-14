@@ -2,8 +2,7 @@ package com.jie.de.controller;
 
 
 import com.jie.de.exception.UsernameAlreadyExistsException;
-import com.jie.de.model.dto.StudentLoginDTO;
-import com.jie.de.model.entity.Student;
+import com.jie.de.model.dto.RegisterDTO;
 import com.jie.de.model.entity.User;
 import com.jie.de.service.teacher.impl.TeacherServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +21,9 @@ public class TeacherController {
     private TeacherServiceImpl teacherServiceimpl;
 
     @PostMapping("/studentRegister")
-    public ResponseEntity<?> studentRegister (@RequestBody StudentLoginDTO studentLoginDTO) {
+    public ResponseEntity<?> studentRegister (@RequestBody RegisterDTO registerDTO) {
         try {
-            User newUser = teacherServiceimpl.studentRegister(studentLoginDTO);
+            User newUser = teacherServiceimpl.studentRegister(registerDTO);
             return new ResponseEntity<>(newUser, HttpStatus.CREATED);
         } catch (UsernameAlreadyExistsException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
