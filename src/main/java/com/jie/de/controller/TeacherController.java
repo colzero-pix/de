@@ -1,7 +1,7 @@
 package com.jie.de.controller;
 
 
-import com.jie.de.exception.UsernameAlreadyExistsException;
+import com.jie.de.exception.UserIdAlreadyExistsException;
 import com.jie.de.model.dto.RegisterDTO;
 import com.jie.de.model.entity.User;
 import com.jie.de.service.teacher.impl.TeacherServiceImpl;
@@ -25,7 +25,7 @@ public class TeacherController {
         try {
             User newUser = teacherServiceimpl.studentRegister(registerDTO);
             return new ResponseEntity<>(newUser, HttpStatus.CREATED);
-        } catch (UsernameAlreadyExistsException e) {
+        } catch (UserIdAlreadyExistsException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

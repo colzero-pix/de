@@ -24,9 +24,9 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
-    //处理用户名冲突异常（注册）409
-    @ExceptionHandler(UsernameAlreadyExistsException.class)
-    public ResponseEntity<?> handleUsernameConflict(UsernameAlreadyExistsException ex) {
+    //处理师生号冲突异常（注册）409
+    @ExceptionHandler(UserIdAlreadyExistsException.class)
+    public ResponseEntity<?> handleUsernameConflict(UserIdAlreadyExistsException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
 

@@ -1,6 +1,6 @@
 package com.jie.de.service.teacher.impl;
 
-import com.jie.de.exception.UsernameAlreadyExistsException;
+import com.jie.de.exception.UserIdAlreadyExistsException;
 import com.jie.de.model.dto.RegisterDTO;
 import com.jie.de.model.entity.User;
 import com.jie.de.repository.UserRepository;
@@ -27,8 +27,8 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     @Transactional
     public User studentRegister(RegisterDTO registerDTO) {
-        if(userRepository.existsByUsername(registerDTO.getUsername())) {
-            throw new UsernameAlreadyExistsException("该用户名已经被注册，请更换用户名");
+        if(userRepository.existsByUserId(registerDTO.getUserId())) {
+            throw new UserIdAlreadyExistsException("该师生号已经被注册，请更换师生号");
         }
 
         User newUser = new User();

@@ -4,7 +4,7 @@ public class InfoChangeDTO {
 
     private String email;
 
-    public String phone;
+    private String phone;
 
 
     public String getEmail() {
