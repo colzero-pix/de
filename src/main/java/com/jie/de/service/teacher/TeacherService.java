@@ -7,6 +7,4 @@ public interface TeacherService {
 
     public User studentRegister(RegisterDTO registerDTO);
 
-
-
 }

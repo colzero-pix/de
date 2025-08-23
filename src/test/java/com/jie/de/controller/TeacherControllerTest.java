@@ -1,11 +1,18 @@
 package com.jie.de.controller;
 
+import com.jie.de.model.entity.User;
+import com.jie.de.repository.UserRepository;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.event.annotation.BeforeTestClass;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,15 +23,37 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
+@WithMockUser(username = "YUE",password = "123456",roles = {"ADMIN"})
 class TeacherControllerTest {
     @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @BeforeEach
+    public void addTestClass() {
+        User newUser = new User();
+        newUser.setUserId(111111111111L);
+        newUser.setUsername("Test");
+        newUser.setPassword(passwordEncoder.encode("11111111"));
+        newUser.setRole("student");
+        userRepository.save(newUser);
+
+        System.out.println("Test user added successfully.");
+    }
+    @AfterEach
+    public void removeTestClass() {
+        userRepository.deleteAll();
+        System.out.println("Test user removed successfully.");
+    }
 
     @Transactional
     @Rollback()
     @Test
-    public void testRegisterStudent() throws Exception {
-        String json = "{ \"username\": \"jie\", \"password\": \"qpalzm1234\", \"userId\": \"202205566299\" }";
+    public void testRegister() throws Exception {
+        String json = "{ \"username\": \"jie\", \"password\": \"qpalzm1234\", \"userId\": \"1\" }";
         mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders
                 .post("/teacher/studentRegister")
                 .content(json.getBytes())
@@ -37,8 +66,36 @@ class TeacherControllerTest {
     @Transactional
     @Rollback()
     @Test
-    public void testRegisterWithRepeteUseridStudent() throws Exception {
-        String json = "{ \"username\": \"jie\", \"password\": \"qpalzm1234\", \"userId\": \"202205566215\" }";
+    public void testRegisterWithRepeteUserid() throws Exception {
+        String json = "{ \"username\": \"jie\", \"password\": \"qpalzm1234\", \"userId\": \"111111111111\" }";
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+                        .post("/teacher/studentRegister")
+                        .content(json.getBytes())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                )
+                .andExpect(MockMvcResultMatchers.status().is4xxClientError())
+                .andDo(print());
+    }
+    @Transactional
+    @Rollback()
+    @Test
+    public void testRegisterWithWithBlankUsername() throws Exception {
+        String json = "{ \"username\": \"\", \"password\": \"qpalzm1234\", \"userId\": \"2\" }";
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+                        .post("/teacher/studentRegister")
+                        .content(json.getBytes())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                )
+                .andExpect(MockMvcResultMatchers.status().is4xxClientError())
+                .andDo(print());
+    }
+    @Transactional
+    @Rollback()
+    @Test
+    public void testRegisterWithWithBlankpassword() throws Exception {
+        String json = "{ \"username\": \"jie\", \"password\": \"\", \"userId\": \"3\" }";
         mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders
                         .post("/teacher/studentRegister")
                         .content(json.getBytes())
