@@ -34,7 +34,10 @@ public class User {
     @Column(name = "phone")
     private String phone;
 
-    public User(long id, long userId, String username, String password, String role, String email, String phone) {
+    @Column(name = "class")
+    private String className;
+
+    public User(long id, long userId, String username, String password, String role, String email, String phone, String className) {
         this.id = id;
         this.userId = userId;
         this.username = username;
@@ -42,6 +45,7 @@ public class User {
         this.role = role;
         this.email = email;
         this.phone = phone;
+        this.className = className;
     }
 
     public User() {
@@ -102,6 +106,14 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
     }
 
     @Override

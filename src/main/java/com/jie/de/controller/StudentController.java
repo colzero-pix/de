@@ -2,12 +2,16 @@ package com.jie.de.controller;
 
 import com.jie.de.model.dto.InfoChangeDTO;
 import com.jie.de.model.dto.PasswordChangeDTO;
+import com.jie.de.model.entity.Course;
 import com.jie.de.security.AuthService;
 import com.jie.de.service.common.impl.UserServiceImpl;
+import com.jie.de.service.studentCourseService.StudentCourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/student")
@@ -15,6 +19,9 @@ public class StudentController {
 
     @Autowired
     private UserServiceImpl userServiceImpl;
+
+    @Autowired
+    private StudentCourseService studentCourseService;
 
     @Autowired
     private AuthService authService;
@@ -41,5 +48,12 @@ public class StudentController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @GetMapping("/courseInformation/{studentId}")
+    public ResponseEntity<List<Course>> getStudentCourses(@PathVariable Long studentId) {
+        List<Course> courses = studentCourseService.getStudentCourses(studentId);
+        return ResponseEntity.ok(courses);
+    }
+
 
 }

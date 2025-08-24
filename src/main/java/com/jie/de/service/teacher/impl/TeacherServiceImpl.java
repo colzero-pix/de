@@ -2,6 +2,7 @@ package com.jie.de.service.teacher.impl;
 
 import com.jie.de.exception.UserIdAlreadyExistsException;
 import com.jie.de.model.dto.RegisterDTO;
+import com.jie.de.model.dto.CourseScheduleDTO;
 import com.jie.de.model.entity.User;
 import com.jie.de.repository.UserRepository;
 import com.jie.de.service.teacher.TeacherService;
