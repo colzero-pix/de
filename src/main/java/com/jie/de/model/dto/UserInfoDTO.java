@@ -18,12 +18,18 @@ public class UserInfoDTO {
 
     private String phone;
 
-    public UserInfoDTO(Long userId, String username, String role, String email, String phone) {
+    private String className;
+
+    private String academyName;
+
+    public UserInfoDTO(Long userId, String username, String role, String email, String phone, String className, String academyName) {
         this.userId = userId;
         this.username = username;
         this.role = role;
         this.email = email;
         this.phone = phone;
+        this.className = className;
+        this.academyName = academyName;
     }
 
     public void setUserId(Long userId) {
@@ -66,4 +72,19 @@ public class UserInfoDTO {
         this.email = email;
     }
 
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    public String getAcademyName() {
+        return academyName;
+    }
+
+    public void setAcademyName(String academyName) {
+        this.academyName = academyName;
+    }
 }

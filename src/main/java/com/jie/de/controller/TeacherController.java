@@ -1,16 +1,15 @@
 package com.jie.de.controller;
 
 
-import com.jie.de.exception.UserIdAlreadyExistsException;
-import com.jie.de.model.dto.RegisterDTO;
-import com.jie.de.model.dto.CourseScheduleDTO;
+import com.jie.de.model.dto.BasicInfoChangeDTO;
+import com.jie.de.model.dto.PasswordChangeDTO;
 import com.jie.de.model.entity.Course;
-import com.jie.de.model.entity.User;
+import com.jie.de.service.admin.Impl.AdminServiceImpl;
+import com.jie.de.service.common.impl.UserServiceImpl;
 import com.jie.de.service.course.CourseService;
-import com.jie.de.service.teacher.impl.TeacherServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,24 +19,43 @@ import java.util.List;
 public class TeacherController {
 
     @Autowired
-    private TeacherServiceImpl teacherServiceimpl;
+    private AdminServiceImpl adminServiceImpl;
 
     @Autowired
     private CourseService courseService;
 
-    @PostMapping("/studentRegister")
-    public ResponseEntity<?> studentRegister (@RequestBody RegisterDTO registerDTO) {
+    @Autowired
+    private UserServiceImpl userServiceImpl;
+
+    //获取老师信息
+    @GetMapping("/information/{userId}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> getUserInfo(@PathVariable(name = "userId") Long userId) throws Exception {
+        return userServiceImpl.getUserInfo(userId);
+    }
+
+    //修改基础信息
+    @PutMapping("/informationChange/{userId}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> updateUserInfo(@PathVariable(name = "userId") Long userId,@RequestBody BasicInfoChangeDTO basicInfoChangeDTO) {
+        return userServiceImpl.changeUserInfo(userId, basicInfoChangeDTO);
+    }
+
+    //修改密码
+    @PutMapping("/passwordChange")
+    @PreAuthorize("isAuthenticated()")
+    public  ResponseEntity<?> updateUserPassword(@RequestBody PasswordChangeDTO passwordChangeDTO) {
         try {
-            User newUser = teacherServiceimpl.studentRegister(registerDTO);
-            return new ResponseEntity<>(newUser, HttpStatus.CREATED);
-        } catch (UserIdAlreadyExistsException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            String newPassword = userServiceImpl.changeUserPassword(passwordChangeDTO);
+            return ResponseEntity.ok(newPassword);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    @GetMapping("/teacher/{teacherId}")
+
+    //获取课程信息（半完成）
+    @GetMapping("/course/{teacherId}")
     public ResponseEntity<List<Course>> getTeacherCourses(@PathVariable Long teacherId) {
         List<Course> courses = courseService.getTeacherCourses(teacherId);
         return ResponseEntity.ok(courses);

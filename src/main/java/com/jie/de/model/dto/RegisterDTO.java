@@ -14,6 +14,37 @@ public class RegisterDTO {
     @NotBlank(message = "密码不能为空")
     private String password;
 
+    @NotBlank(message = "身份不能为空")
+    private String role;
+
+    private String className;
+
+    private String academyName;
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public String getAcademyName() {
+        return academyName;
+    }
+
+    public void setAcademyName(String academyName) {
+        this.academyName = academyName;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
     public Long getUserId() {
         return userId;
     }

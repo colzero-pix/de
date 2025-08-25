@@ -2,7 +2,7 @@ package com.jie.de.service.common.impl;
 
 import com.jie.de.exception.ForbiddenException;
 import com.jie.de.exception.UserNotFoundException;
-import com.jie.de.model.dto.InfoChangeDTO;
+import com.jie.de.model.dto.BasicInfoChangeDTO;
 import com.jie.de.model.dto.PasswordChangeDTO;
 import com.jie.de.model.dto.UserInfoDTO;
 import com.jie.de.model.entity.User;
@@ -54,7 +54,9 @@ public class UserServiceImpl implements UserService {
                     targetUser.getUsername(),
                     targetUser.getRole(),
                     targetUser.getEmail(),
-                    targetUser.getPhone()
+                    targetUser.getPhone(),
+                    targetUser.getClassName(),
+                    targetUser.getAcademyName()
             );
 
             return ResponseEntity.ok(targetInfo);
@@ -65,7 +67,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public ResponseEntity<?> changeUserInfo(Long userId, InfoChangeDTO infoChangeDTO) {
+    public ResponseEntity<?> changeUserInfo(Long userId, BasicInfoChangeDTO basicInfoChangeDTO) {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String currentUsername = authentication.getName();
@@ -81,8 +83,8 @@ public class UserServiceImpl implements UserService {
                 }
             }
 
-            targetUser.setEmail(infoChangeDTO.getEmail());
-            targetUser.setPhone(infoChangeDTO.getPhone());
+            targetUser.setEmail(basicInfoChangeDTO.getEmail());
+            targetUser.setPhone(basicInfoChangeDTO.getPhone());
 
             return ResponseEntity.ok(targetUser);
         } catch (Exception e) {

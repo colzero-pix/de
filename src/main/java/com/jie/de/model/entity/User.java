@@ -34,10 +34,13 @@ public class User {
     @Column(name = "phone")
     private String phone;
 
-    @Column(name = "class")
+    @Column(name = "class_name")
     private String className;
 
-    public User(long id, long userId, String username, String password, String role, String email, String phone, String className) {
+    @Column(name = "academy_name")
+    private String academyName;
+
+    public User(long id, long userId, String username, String password, String role, String email, String phone, String className, String academyName) {
         this.id = id;
         this.userId = userId;
         this.username = username;
@@ -46,6 +49,7 @@ public class User {
         this.email = email;
         this.phone = phone;
         this.className = className;
+        this.academyName= academyName;
     }
 
     public User() {
@@ -116,6 +120,15 @@ public class User {
         this.className = className;
     }
 
+    public String getAcademyName() {
+        return academyName;
+    }
+
+    public void setAcademyName(String academyName) {
+        this.academyName = academyName;
+    }
+
+
     @Override
     public String toString() {
         return "User: \n" +
@@ -124,6 +137,8 @@ public class User {
                 "password=" + password + "\n" +
                 "role=" + role + "\n" +
                 "email=" + email + "\n" +
-                "phone=" + phone;
+                "phone=" + phone + "\n" +
+                "class=" + className + "\n" +
+                "academy=" + academyName;
     }
 }

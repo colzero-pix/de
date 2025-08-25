@@ -22,7 +22,7 @@ public class JwtUserDetails implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("未找到用户:" + name));
 
         //检验权限
-        String role = "admin".equals(user.getUsername()) ? "ROLE_ADMIN" : "ROLE_USER";
+        String role = "admin".equals(user.getRole()) ? "ROLE_ADMIN" : "ROLE_USER";
 
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getUsername())

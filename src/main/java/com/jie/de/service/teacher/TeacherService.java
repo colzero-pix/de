@@ -5,7 +5,7 @@ import com.jie.de.model.entity.User;
 
 public interface TeacherService {
 
-    public User studentRegister(RegisterDTO registerDTO);
+
 
 
 

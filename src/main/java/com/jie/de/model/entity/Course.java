@@ -39,20 +39,18 @@ public class Course {
     @Column(name = "location", nullable = false)
     private String location;
 
-    @Column(name = "credit")
+    @Column(name = "credit", nullable = false)
     private Double credit;
-
-
-    @Column(name = "created_time")
-    private LocalDateTime createdTime;
-
-    @Column(name = "updated_time")
-    private LocalDateTime updatedTime;
 
     public Course() {}
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getCourseName() { return courseName; }
     public void setCourseName(String courseName) { this.courseName = courseName; }
@@ -84,9 +82,4 @@ public class Course {
     public Double getCredit() { return credit; }
     public void setCredit(Double credit) { this.credit = credit; }
 
-    public LocalDateTime getCreatedTime() { return createdTime; }
-    public void setCreatedTime(LocalDateTime createdTime) { this.createdTime = createdTime; }
-
-    public LocalDateTime getUpdatedTime() { return updatedTime; }
-    public void setUpdatedTime(LocalDateTime updatedTime) { this.updatedTime = updatedTime; }
 }
