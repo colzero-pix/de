@@ -1,15 +1,14 @@
 package com.jie.de.controller;
 
 
-import com.jie.de.model.dto.BasicInfoUpdateDTO;
-import com.jie.de.model.dto.PasswordUpdateDTO;
-import com.jie.de.model.dto.ScoreDTO;
-import com.jie.de.model.dto.TeacherCourseDTO;
+import com.jie.de.model.dto.*;
 import com.jie.de.model.entity.Course;
+import com.jie.de.repository.CourseTextbookOrderRepository;
 import com.jie.de.service.admin.Impl.AdminServiceImpl;
 import com.jie.de.service.common.impl.UserServiceImpl;
 import com.jie.de.service.course.CourseService;
 import com.jie.de.service.score.ScoreService;
+import com.jie.de.service.teacherTextbook.TeacherTextbookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -32,6 +31,9 @@ public class TeacherController {
 
     @Autowired
     private ScoreService scoreService;
+
+    @Autowired
+    private TeacherTextbookService teacherTextbookService;
 
     //获取老师信息（改）
     @GetMapping("/information")
@@ -79,6 +81,23 @@ public class TeacherController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> getScoresByCourseId(@PathVariable Long courseId) {
         return scoreService.getScoresByCourseId(courseId);
+    }
+
+
+    // 提交教材订购请求
+    @PostMapping("/order")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> createOrder(
+            @RequestBody TextbookOrderDTO orderDTO
+    ) {
+        return teacherTextbookService.createTextbookOrder(orderDTO);
+    }
+
+    // 查询自己的订购记录
+    @GetMapping("/orders")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> getMyOrders() {
+        return teacherTextbookService.getTeacherOrders();
     }
 
 }

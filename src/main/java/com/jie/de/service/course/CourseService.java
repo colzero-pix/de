@@ -3,6 +3,7 @@ package com.jie.de.service.course;
 import com.jie.de.model.dto.CourseAddDTO;
 import com.jie.de.model.dto.CourseUpdateDTO;
 import com.jie.de.model.entity.Course;
+import com.jie.de.model.entity.User;
 import com.jie.de.repository.CourseRepository;
 import com.jie.de.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -117,7 +118,16 @@ public class CourseService {
     }
 
 
+    public List<Course> getCourses() {
 
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("错误"));
+
+        return courseRepository.findCoursesByClassNameContaining(user.getClassName());
+    }
 
 
 }

@@ -30,9 +30,15 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
-    //
+    //处理成绩信息未找到异常404
     @ExceptionHandler(ScoreNotFoundException.class)
     public ResponseEntity<?> handleScoreNotFound(ScoreNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    //处理订单记录未找到异常404
+    @ExceptionHandler(OrderNotFoundException.class)
+    public ResponseEntity<?> handleOrderNotFound(OrderNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 

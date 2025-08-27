@@ -159,4 +159,15 @@ public class ScoreService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("删除成绩失败：" + e.getMessage());
         }
     }
+
+    public List<Course> getCourses() {
+
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("错误"));
+
+        return courseRepository.findCoursesByClassNameContaining(user.getClassName());
+    }
 }

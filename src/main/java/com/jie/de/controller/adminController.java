@@ -3,8 +3,10 @@ package com.jie.de.controller;
 import com.jie.de.exception.UserIdAlreadyExistsException;
 import com.jie.de.model.dto.*;
 import com.jie.de.model.entity.Course;
+import com.jie.de.model.entity.CourseTextbookOrder;
 import com.jie.de.model.entity.User;
 import com.jie.de.service.ClassInfoService;
+import com.jie.de.service.adminTextbook.AdminTextbookService;
 import com.jie.de.service.admin.Impl.AdminServiceImpl;
 import com.jie.de.service.common.impl.UserServiceImpl;
 import com.jie.de.service.course.CourseService;
@@ -26,6 +28,8 @@ public class adminController {
     @Autowired
     private ClassInfoService classInfoService;
 
+    @Autowired
+    private AdminTextbookService adminTextbookService;
 
     //注册用户
     @PostMapping("/userRegister")
@@ -140,5 +144,28 @@ public class adminController {
         return classInfoService.deleteClassInfo(id);
     }
 
+
+    //查询所有订购记录（可选按状态筛选）
+    @GetMapping("/orders")
+    public ResponseEntity<?> getAllOrders(
+            @RequestParam(required = false) CourseTextbookOrder.OrderStatus status
+    ) {
+        return adminTextbookService.getAllOrders(status);
+    }
+
+    // 更新订购状态
+    @PutMapping("/order/{orderId}/status")
+    public ResponseEntity<?> updateOrderStatus(
+            @PathVariable Long orderId,
+            @RequestBody StatusUpdateDTO updateDTO
+    ) {
+        return adminTextbookService.updateOrderStatus(orderId, updateDTO);
+    }
+
+    // 查询教材库存
+    @GetMapping("/inventory")
+    public ResponseEntity<?> getTextbookInventory() {
+        return adminTextbookService.getTextbookInventory();
+    }
 
 }

@@ -7,8 +7,8 @@ import com.jie.de.model.entity.Course;
 import com.jie.de.model.entity.User;
 import com.jie.de.security.AuthService;
 import com.jie.de.service.common.impl.UserServiceImpl;
+import com.jie.de.service.course.CourseService;
 import com.jie.de.service.score.ScoreService;
-import com.jie.de.service.studentCourseService.StudentCourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,7 +26,7 @@ public class StudentController {
     private UserServiceImpl userServiceImpl;
 
     @Autowired
-    private StudentCourseService studentCourseService;
+    private CourseService courseService;
 
     @Autowired
     private AuthService authService;
@@ -65,13 +65,13 @@ public class StudentController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<Course>> getStudentCourses() {
 
-        List<Course> courses = studentCourseService.getCourses();
+        List<Course> courses = courseService.getCourses();
 
         return ResponseEntity.ok(courses);
     }
 
     //查看自己成绩
-    @GetMapping("/score")
+    @GetMapping("/student")
     public ResponseEntity<?> getScoresByStudentId() {
         return scoreService.getScoresByStudentId();
     }

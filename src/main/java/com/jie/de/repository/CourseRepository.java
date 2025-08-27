@@ -32,4 +32,7 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     List<Course> findByTeacherAndTime(@Param("teacherId") Long teacherId,
                                       @Param("weekday") Integer weekday,
                                       @Param("timeSlot") String timeSlot);
+
+    @Query("SELECT c FROM Course c WHERE c.className LIKE %:className%")
+    List<Course> findCoursesByClassNameContaining(@Param("className") String className);
 }
