@@ -7,6 +7,7 @@ import com.jie.de.model.entity.Course;
 import com.jie.de.model.entity.User;
 import com.jie.de.security.AuthService;
 import com.jie.de.service.common.impl.UserServiceImpl;
+import com.jie.de.service.score.ScoreService;
 import com.jie.de.service.studentCourseService.StudentCourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,9 @@ public class StudentController {
 
     @Autowired
     private AuthService authService;
+
+    @Autowired
+    private ScoreService scoreService;
 
     //获取学生信息(改)
     @GetMapping("/information")
@@ -66,6 +70,10 @@ public class StudentController {
         return ResponseEntity.ok(courses);
     }
 
-
+    //查看自己成绩
+    @GetMapping("/score")
+    public ResponseEntity<?> getScoresByStudentId() {
+        return scoreService.getScoresByStudentId();
+    }
 
 }

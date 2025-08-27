@@ -3,7 +3,6 @@ package com.jie.de.service.course;
 import com.jie.de.model.dto.CourseAddDTO;
 import com.jie.de.model.dto.CourseUpdateDTO;
 import com.jie.de.model.entity.Course;
-import com.jie.de.model.entity.User;
 import com.jie.de.repository.CourseRepository;
 import com.jie.de.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;

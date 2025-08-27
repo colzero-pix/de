@@ -30,6 +30,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
+    //
+    @ExceptionHandler(ScoreNotFoundException.class)
+    public ResponseEntity<?> handleScoreNotFound(ScoreNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
     //处理师生号冲突异常（注册）409
     @ExceptionHandler(UserIdAlreadyExistsException.class)
     public ResponseEntity<?> handleUsernameConflict(UserIdAlreadyExistsException ex) {
@@ -41,6 +47,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleDuplicateMajorClassName(DuplicateMajorClassNameException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
+
+    //
+    @ExceptionHandler(DuplicateScoreException.class)
+    public ResponseEntity<?> handleDuplicateScore(DuplicateScoreException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
+
 
     //处理通用异常400
     @ExceptionHandler(Exception.class)

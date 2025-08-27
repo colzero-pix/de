@@ -7,12 +7,16 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface CourseRepository extends JpaRepository<Course, Long> {
 
     // 根据教师ID查询课程
     List<Course> findByTeacherId(Long teacherId);
+
+    // 根据课程名查询课程
+    List<Course> findByCourseName(String courseName);
 
     // 根据教师姓名查询课程
     List<Course> findByTeacherName(String teacherName);
