@@ -16,4 +16,6 @@ public interface AdminService {
 
     public ResponseEntity<?> getUserInfo(Long userId);
 
+    public ResponseEntity<?> getAllUserInfo();
+
 }

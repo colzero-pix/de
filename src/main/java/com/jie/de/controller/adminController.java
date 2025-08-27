@@ -67,8 +67,14 @@ public class adminController {
 
     //获取用户信息
     @GetMapping("/getUserInfo/{userId}")
-    public ResponseEntity<?> updateUserPassword(@PathVariable(name = "userId") Long userId) {
+    public ResponseEntity<?> getUserInfo(@PathVariable(name = "userId") Long userId) {
         return adminServiceImpl.getUserInfo(userId);
+    }
+
+    //获取所有用户信息
+    @GetMapping("/getAllUserInfo")
+    public ResponseEntity<?> getAllUserInfo() {
+        return adminServiceImpl.getAllUserInfo();
     }
 
     //添加课程

@@ -16,6 +16,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class AdminServiceImpl implements AdminService {
 
@@ -98,6 +101,43 @@ public class AdminServiceImpl implements AdminService {
             return ResponseEntity.ok(targetInfo);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<?> getAllUserInfo() {
+        try {
+            // 1. 查询所有用户（调用 JpaRepository 自带的 findAll()）
+            List<User> allUsers = userRepository.findAll();
+
+            // 2. 校验是否有用户数据（无数据则抛异常）
+            if (allUsers.isEmpty()) {
+                throw new UserNotFoundException("当前系统中暂无用户数据");
+            }
+
+            // 3. 转换为 UserInfoDTO 列表（避免暴露 User 实体的敏感字段）
+            List<UserInfoDTO> allUserInfos = allUsers.stream()
+                    .map(user -> new UserInfoDTO(
+                            user.getUserId(),
+                            user.getUsername(),
+                            user.getRole(),
+                            user.getEmail(),
+                            user.getPhone(),
+                            user.getClassName(),
+                            user.getAcademyName()
+                    ))
+                    .collect(Collectors.toList());
+
+            // 4. 返回成功响应（包含所有用户的 DTO 列表）
+            return ResponseEntity.ok(allUserInfos);
+        } catch (UserNotFoundException e) {
+            // 无用户数据的异常，返回 404 + 提示信息
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            // 其他未知异常（如数据库异常），返回 500 + 错误信息
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("获取所有用户信息失败：" + e.getMessage());
         }
     }
 
