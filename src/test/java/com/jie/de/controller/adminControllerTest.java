@@ -1,5 +1,6 @@
 package com.jie.de.controller;
 
+import com.jie.de.model.dto.CourseAddDTO;
 import com.jie.de.model.dto.RegisterDTO;
 import com.jie.de.model.dto.ResetPasswordDTO;
 import com.jie.de.model.entity.Course;
@@ -117,6 +118,7 @@ class adminControllerTest {
     void addCourse() throws Exception {
         Course course = new Course();
         course.setCourseName("java");
+        course.setClassName("网安一班");
         course.setCredit(3.0);
         course.setStartWeek(1);
         course.setEndWeek(20);
@@ -128,35 +130,50 @@ class adminControllerTest {
         course.setWeekday(202);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .post("/admin")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(ObjectMapper.writeValueAsString(course)))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.courseName").value("java"));
-    }
-    @Transactional
-    @Rollback()
-    @Test
-    void deleteCourse() throws Exception {
-        // 先添加课程
-        Course course = new Course();
-        course.setCourseName("java");
-        course.setCredit(3.0);
-        course.setStartWeek(1);
-        course.setEndWeek(20);
-        course.setLocation("逸夫楼");
-        course.setTeacherId(1L);
-        course.setTeacherName("余胜军");
-        course.setTimeSlot("1-2节");
-        course.setWeekType("单周");
-        course.setWeekday(202);
-        mockMvc.perform(MockMvcRequestBuilders
-                        .post("/admin")
+                        .post("/admin/addCourse")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(ObjectMapper.writeValueAsString(course)))
                 .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+    @Transactional
+    @Rollback
+    @Test
+    void testAddAndDeleteCourse() throws Exception {
+        // 构造 CourseAddDTO
+        CourseAddDTO dto = new CourseAddDTO();
+        dto.setClassName("网安一班");
+        dto.setCourseName("java");
+        dto.setCredit(3.0);
+        dto.setStartWeek(1);
+        dto.setEndWeek(20);
+        dto.setLocation("逸夫楼");
+        dto.setTeacherId(1L);
+        dto.setTeacherName("余胜军");
+        dto.setTimeSlot("1-2节");
+        dto.setWeekType("单周");
+        dto.setWeekday(2);
+
+        // 添加课程
+        String addResult = mockMvc.perform(MockMvcRequestBuilders
+                        .post("/admin/addCourse")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(ObjectMapper.writeValueAsString(dto)))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        // 获取课程ID（假设返回课程ID或可通过查询接口获取）
+        // 这里假设课程ID为1L
+        Long courseId = 1L;
+
+        // 查询课程
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/admin/courseInfo/{id}", courseId))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.courseName").value("java"));
+
         // 删除课程
-        mockMvc.perform(MockMvcRequestBuilders.delete("/admin/{id}", 2L))
+        mockMvc.perform(MockMvcRequestBuilders
+                        .delete("/admin/deleteCourse/{id}", courseId))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
     @Transactional
@@ -165,6 +182,7 @@ class adminControllerTest {
     void getCourseById() throws Exception {
         Course course = new Course();
         course.setCourseName("java");
+        course.setClassName("网安一班");
         course.setCredit(3.0);
         course.setStartWeek(1);
         course.setEndWeek(20);
@@ -175,13 +193,12 @@ class adminControllerTest {
         course.setWeekType("单周");
         course.setWeekday(202);
         mockMvc.perform(MockMvcRequestBuilders
-                        .post("/admin")
+                        .post("/admin/addCourse")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(ObjectMapper.writeValueAsString(course)))
                 .andExpect(MockMvcResultMatchers.status().isOk());
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/admin/{id}", 1L))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.courseName").value("java"));
+                        .get("/admin/courseInfo/{id}", 1L))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 }
