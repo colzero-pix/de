@@ -3,9 +3,13 @@ package com.jie.de.service.course;
 import com.jie.de.model.dto.CourseAddDTO;
 import com.jie.de.model.dto.CourseUpdateDTO;
 import com.jie.de.model.entity.Course;
+import com.jie.de.model.entity.User;
 import com.jie.de.repository.CourseRepository;
+import com.jie.de.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,9 +21,18 @@ public class CourseService {
     @Autowired
     private CourseRepository courseRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     // 获取教师的所有课程
-    public List<Course> getTeacherCourses(Long teacherId) {
-        return courseRepository.findByTeacherId(teacherId);
+    public List<Course> getTeacherCourses() {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+//        User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("错误"));
+
+        return courseRepository.findByTeacherName(username);
     }
 
     // 获取教师某天的课程

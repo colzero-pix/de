@@ -4,6 +4,7 @@ import com.jie.de.exception.UserIdAlreadyExistsException;
 import com.jie.de.model.dto.*;
 import com.jie.de.model.entity.Course;
 import com.jie.de.model.entity.User;
+import com.jie.de.service.ClassInfoService;
 import com.jie.de.service.admin.Impl.AdminServiceImpl;
 import com.jie.de.service.common.impl.UserServiceImpl;
 import com.jie.de.service.course.CourseService;
@@ -23,9 +24,7 @@ public class adminController {
     private AdminServiceImpl adminServiceImpl;
 
     @Autowired
-    private UserServiceImpl userServiceImpl;
-
-
+    private ClassInfoService classInfoService;
 
 
     //注册用户
@@ -77,6 +76,8 @@ public class adminController {
         return adminServiceImpl.getAllUserInfo();
     }
 
+
+
     //添加课程
     @PostMapping("/addCourse")
     public ResponseEntity<?> addCourse(@RequestBody CourseAddDTO courseAddDTO) {
@@ -106,6 +107,38 @@ public class adminController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+
+
+    //新增班级
+    @PostMapping("/addClassInfo")
+    public ResponseEntity<?> addClassInfo(@RequestBody ClassInfoDTO classInfoDTO) {
+        return classInfoService.addClassInfo(classInfoDTO);
+    }
+
+    //查询所有班级
+    @GetMapping("/getAllClassInfo")
+    public ResponseEntity<?> getAllClassInfo() {
+        return classInfoService.getAllClassInfo();
+    }
+
+    //根据ID查询单个班级
+    @GetMapping("/getClassInfo/{id}")
+    public ResponseEntity<?> getClassInfoById(@PathVariable Long id) {
+        return classInfoService.getClassInfoById(id);
+    }
+
+    //修改班级
+    @PutMapping("/updateClassInfo/{id}")
+    public ResponseEntity<?> updateClassInfo(@PathVariable Long id, @RequestBody ClassInfoDTO classInfoDTO
+    ) {
+        return classInfoService.updateClassInfo(id, classInfoDTO);
+    }
+
+    //删除班级
+    @DeleteMapping("/deleteClassInfo/{id}")
+    public ResponseEntity<?> deleteClassInfo(@PathVariable Long id) {
+        return classInfoService.deleteClassInfo(id);
+    }
 
 
 }

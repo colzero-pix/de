@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 
 public interface UserService {
 
-    public ResponseEntity<?> getUserInfo(Long userId);
+    public ResponseEntity<?> getUserInfo();
 
     public ResponseEntity<?> changeUserInfo(Long userId, BasicInfoUpdateDTO basicInfoUpdateDTO);
 

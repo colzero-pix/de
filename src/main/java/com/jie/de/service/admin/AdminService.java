@@ -18,4 +18,5 @@ public interface AdminService {
 
     public ResponseEntity<?> getAllUserInfo();
 
+
 }

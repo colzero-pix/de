@@ -33,14 +33,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public ResponseEntity<?> getUserInfo(Long userId) {
+    public ResponseEntity<?> getUserInfo() {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            String currentUsername = authentication.getName();
+            String username = authentication.getName();
 
-            User targetUser = userRepository.findByUserId(userId).orElseThrow(() -> new UserNotFoundException("查询ID不存在：" + userId));
+            User targetUser = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("该用户不存在" + username));
 
-            if(!targetUser.getUsername().equals(currentUsername)) {
+            if(!targetUser.getUsername().equals(username)) {
                 boolean isAdmin = authentication.getAuthorities().stream()
                         .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
 

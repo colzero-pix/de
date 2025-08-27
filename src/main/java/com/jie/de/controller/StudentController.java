@@ -11,6 +11,8 @@ import com.jie.de.service.studentCourseService.StudentCourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,11 +30,11 @@ public class StudentController {
     @Autowired
     private AuthService authService;
 
-    //获取学生信息
-    @GetMapping("/information/{userId}")
+    //获取学生信息(改)
+    @GetMapping("/information")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<?> getUserInfo(@PathVariable(name = "userId") Long userId) throws Exception {
-        return userServiceImpl.getUserInfo(userId);
+    public ResponseEntity<?> getUserInfo() throws Exception {
+        return userServiceImpl.getUserInfo();
     }
 
     //修改基础信息
@@ -54,14 +56,16 @@ public class StudentController {
         }
     }
 
-    //获取课程信息
-    @GetMapping("/courseInformation/{studentId}")
-    public ResponseEntity<List<Course>> getStudentCourses(@PathVariable Long studentId) {
+    //获取课程信息（改）
+    @GetMapping("/courseInformation")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<List<Course>> getStudentCourses() {
 
-        List<Course> courses = studentCourseService.getCoursesByClassName(studentId);
+        List<Course> courses = studentCourseService.getCourses();
 
         return ResponseEntity.ok(courses);
     }
+
 
 
 }

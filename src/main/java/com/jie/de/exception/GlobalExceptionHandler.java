@@ -24,9 +24,21 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
+    //处理班级信息未找到异常404
+    @ExceptionHandler(ClassInfoNotFoundException.class)
+    public ResponseEntity<?> handleClassInfoNotFound(ClassInfoNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
     //处理师生号冲突异常（注册）409
     @ExceptionHandler(UserIdAlreadyExistsException.class)
     public ResponseEntity<?> handleUsernameConflict(UserIdAlreadyExistsException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
+
+    //专业班级名称重复异常409
+    @ExceptionHandler(DuplicateMajorClassNameException.class)
+    public ResponseEntity<?> handleDuplicateMajorClassName(DuplicateMajorClassNameException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
 

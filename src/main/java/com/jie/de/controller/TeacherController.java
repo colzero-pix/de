@@ -28,11 +28,11 @@ public class TeacherController {
     @Autowired
     private UserServiceImpl userServiceImpl;
 
-    //获取老师信息
-    @GetMapping("/information/{userId}")
+    //获取老师信息（改）
+    @GetMapping("/information")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<?> getUserInfo(@PathVariable(name = "userId") Long userId) throws Exception {
-        return userServiceImpl.getUserInfo(userId);
+    public ResponseEntity<?> getUserInfo() throws Exception {
+        return userServiceImpl.getUserInfo();
     }
 
     //修改基础信息
@@ -54,11 +54,11 @@ public class TeacherController {
         }
     }
 
-
-    //获取课程信息
-    @GetMapping("/course/{teacherId}")
-    public ResponseEntity<?> getTeacherCourses(@PathVariable Long teacherId) {
-        List<Course> courses = courseService.getTeacherCourses(teacherId);
+    //获取课程信息(改)
+    @GetMapping("/course")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> getTeacherCourses() {
+        List<Course> courses = courseService.getTeacherCourses();
         return ResponseEntity.ok(courses);
     }
 
