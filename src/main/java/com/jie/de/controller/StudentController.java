@@ -54,7 +54,7 @@ public class StudentController {
         }
     }
 
-    //获取课程信息（半完成）
+    //获取课程信息
     @GetMapping("/courseInformation/{studentId}")
     public ResponseEntity<List<Course>> getStudentCourses(@PathVariable Long studentId) {
 

@@ -55,7 +55,7 @@ public class TeacherController {
     }
 
 
-    //获取课程信息（半完成）
+    //获取课程信息
     @GetMapping("/course/{teacherId}")
     public ResponseEntity<?> getTeacherCourses(@PathVariable Long teacherId) {
         List<Course> courses = courseService.getTeacherCourses(teacherId);
