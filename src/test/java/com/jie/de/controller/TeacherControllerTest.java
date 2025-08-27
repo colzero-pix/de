@@ -50,17 +50,23 @@ class TeacherControllerTest {
     }
 
     @Transactional
-    @Rollback()
+    @Rollback
     @Test
-    public void testRegister() throws Exception {
-        String json = "{ \"username\": \"jie\", \"password\": \"qpalzm1234\", \"userId\": \"1\" }";
+    public void testGetTeacherInfo() throws Exception {
+        // 添加与认证用户一致的测试用户
+        User newUser = new User();
+        newUser.setUserId(111111111111L);
+        newUser.setUsername("YUE");
+        newUser.setPassword(passwordEncoder.encode("123456"));
+        newUser.setRole("ADMIN");
+        userRepository.save(newUser);
+
         mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-                .post("/teacher/studentRegister")
-                .content(json.getBytes())
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-        )
-                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
+                        .get("/teacher/information")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                )
+                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(print());
     }
     @Transactional
@@ -103,6 +109,71 @@ class TeacherControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                 )
                 .andExpect(MockMvcResultMatchers.status().is4xxClientError())
+                .andDo(print());
+    }
+
+
+    @Transactional
+    @Rollback
+    @Test
+    public void testUpdateUserInfo() throws Exception {
+        User newUser = new User();
+        newUser.setUserId(111111111112L);
+        newUser.setUsername("YUE");
+        newUser.setPassword(passwordEncoder.encode("123456"));
+        newUser.setRole("ADMIN");
+        userRepository.save(newUser);
+
+        String json = "{ \"email\": \"test@demo.com\", \"phone\": \"12345678901\" }";
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+                        .put("/teacher/informationChange/{id}", 111111111112L)
+                        .content(json.getBytes())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                )
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(print());
+    }
+
+    @Transactional
+    @Rollback
+    @Test
+    public void testUpdateUserPassword() throws Exception {
+        User newUser = new User();
+        newUser.setUserId(111111111111L);
+        newUser.setUsername("YUE");
+        newUser.setPassword(passwordEncoder.encode("123456"));
+        newUser.setRole("ADMIN");
+        userRepository.save(newUser);
+
+        String json = "{ \"confirmPassword\": \"654321\", \"currentPassword\": \"123456\", \"newPassword\": \"654321\" }";
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+                        .put("/teacher/passwordChange")
+                        .content(json.getBytes())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                )
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(print());
+    }
+
+    @Transactional
+    @Rollback
+    @Test
+    public void testGetTeacherCourses() throws Exception {
+        User newUser = new User();
+        newUser.setUserId(111111111111L);
+        newUser.setUsername("YUE");
+        newUser.setPassword(passwordEncoder.encode("123456"));
+        newUser.setRole("ADMIN");
+        userRepository.save(newUser);
+
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+                        .get("/teacher/course")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                )
+                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(print());
     }
 
