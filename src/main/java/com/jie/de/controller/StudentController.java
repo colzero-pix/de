@@ -1,8 +1,10 @@
 package com.jie.de.controller;
 
-import com.jie.de.model.dto.BasicInfoChangeDTO;
-import com.jie.de.model.dto.PasswordChangeDTO;
+import com.jie.de.exception.UserNotFoundException;
+import com.jie.de.model.dto.BasicInfoUpdateDTO;
+import com.jie.de.model.dto.PasswordUpdateDTO;
 import com.jie.de.model.entity.Course;
+import com.jie.de.model.entity.User;
 import com.jie.de.security.AuthService;
 import com.jie.de.service.common.impl.UserServiceImpl;
 import com.jie.de.service.studentCourseService.StudentCourseService;
@@ -36,16 +38,16 @@ public class StudentController {
     //修改基础信息
     @PutMapping("/informationChange/{userId}")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<?> updateUserInfo(@PathVariable(name = "userId") Long userId,@RequestBody BasicInfoChangeDTO basicInfoChangeDTO) {
-        return userServiceImpl.changeUserInfo(userId, basicInfoChangeDTO);
+    public ResponseEntity<?> updateUserInfo(@PathVariable(name = "userId") Long userId,@RequestBody BasicInfoUpdateDTO basicInfoUpdateDTO) {
+        return userServiceImpl.changeUserInfo(userId, basicInfoUpdateDTO);
     }
 
     //修改密码
     @PutMapping("/passwordChange")
     @PreAuthorize("isAuthenticated()")
-    public  ResponseEntity<?> updateUserPassword(@RequestBody PasswordChangeDTO passwordChangeDTO) {
+    public  ResponseEntity<?> updateUserPassword(@RequestBody PasswordUpdateDTO passwordUpdateDTO) {
         try {
-            String newPassword = userServiceImpl.changeUserPassword(passwordChangeDTO);
+            String newPassword = userServiceImpl.changeUserPassword(passwordUpdateDTO);
             return ResponseEntity.ok(newPassword);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -55,7 +57,9 @@ public class StudentController {
     //获取课程信息（半完成）
     @GetMapping("/courseInformation/{studentId}")
     public ResponseEntity<List<Course>> getStudentCourses(@PathVariable Long studentId) {
-        List<Course> courses = studentCourseService.getStudentCourses(studentId);
+
+        List<Course> courses = studentCourseService.getCoursesByClassName(studentId);
+
         return ResponseEntity.ok(courses);
     }
 

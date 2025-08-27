@@ -12,8 +12,7 @@ import java.util.List;
 @Repository
 public interface StudentCourseRepository extends JpaRepository<StudentCourse, Long> {
 
-    // 查询学生的所有课程
-    @Query("SELECT c FROM Course c WHERE c.id IN " +
-            "(SELECT sc.courseId FROM StudentCourse sc WHERE sc.studentId = :studentId)")
-    List<Course> findCoursesByStudentId(@Param("studentId") Long studentId);
+
+    @Query("SELECT c FROM Course c WHERE c.className LIKE %:className%")
+    List<Course> findCoursesByClassNameContaining(@Param("className") String className);
 }

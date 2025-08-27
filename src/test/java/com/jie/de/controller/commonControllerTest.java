@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @WithMockUser(username = "YUE",password = "123456",roles = {"ADMIN"})
-class commoeControllerTest {
+class commonControllerTest {
 
     @Autowired
     private MockMvc mockMvc;

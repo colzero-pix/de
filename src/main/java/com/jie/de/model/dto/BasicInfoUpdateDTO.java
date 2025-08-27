@@ -1,6 +1,6 @@
 package com.jie.de.model.dto;
 
-public class BasicInfoChangeDTO {
+public class BasicInfoUpdateDTO {
 
     private String email;
 

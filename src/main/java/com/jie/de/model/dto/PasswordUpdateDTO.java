@@ -2,7 +2,7 @@ package com.jie.de.model.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
-public class PasswordChangeDTO {
+public class PasswordUpdateDTO {
 
     @NotBlank(message = "当前密码不能为空")
     private String currentPassword;

@@ -1,76 +1,42 @@
-package com.jie.de.model.entity;
+package com.jie.de.model.dto;
 
-import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
+import jakarta.validation.constraints.NotNull;
 
-@Entity
-@Table(name = "course")
-public class Course {
+public class CourseUpdateDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(name = "course_name", nullable = false)
+    @NotNull(message = "课程名不能为空")
     private String courseName;
 
-    @Column(name = "teacher_id", nullable = false)
+    @NotNull(message = "教师ID不能为空")
     private Long teacherId;
 
-    @Column(name = "teacher_name", nullable = false)
+    @NotNull(message = "教师名不能为空")
     private String teacherName;
 
-    @Column(name = "weekday", nullable = false)
+    @NotNull(message = "上课周次不能为空")
     private Integer weekday;
 
-    @Column(name = "time_slot", nullable = false)
+    @NotNull(message = "时间段不能为空")
     private String timeSlot;
 
-    @Column(name = "start_week", nullable = false)
+    @NotNull(message = "开始周不能为空")
     private Integer startWeek;
 
-    @Column(name = "end_week", nullable = false)
+    @NotNull(message = "结束周不能为空")
     private Integer endWeek;
 
-    @Column(name = "week_type")
+    @NotNull(message = "周类型不能为空")
     private String weekType;
 
-    @Column(name = "location", nullable = false)
+    @NotNull(message = "上课地点不能为空")
     private String location;
 
-    @Column(name = "credit", nullable = false)
+    @NotNull(message = "学分不能为空")
     private Double credit;
 
-    @Column(name = "class_name", nullable = false)
+    @NotNull(message = "上课班级不能为空")
     private String className;
-
-    public Course() {}
-
-    public Course(String courseName, Long teacherId, String teacherName,
-                  Integer weekday, String timeSlot, Integer startWeek,
-                  Integer endWeek, String weekType, String location,
-                  Double credit, String className) {
-        this.courseName = courseName;
-        this.teacherId = teacherId;
-        this.teacherName = teacherName;
-        this.weekday = weekday;
-        this. timeSlot = timeSlot;
-        this.startWeek = startWeek;
-        this.endWeek = endWeek;
-        this.weekType = weekType;
-        this.location = location;
-        this.credit = credit;
-        this.className = className;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getCourseName() { return courseName; }
     public void setCourseName(String courseName) { this.courseName = courseName; }
@@ -109,4 +75,5 @@ public class Course {
     public void setClassName(String className) {
         this.className = className;
     }
+
 }

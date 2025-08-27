@@ -2,8 +2,8 @@ package com.jie.de.service.common.impl;
 
 import com.jie.de.exception.ForbiddenException;
 import com.jie.de.exception.UserNotFoundException;
-import com.jie.de.model.dto.BasicInfoChangeDTO;
-import com.jie.de.model.dto.PasswordChangeDTO;
+import com.jie.de.model.dto.BasicInfoUpdateDTO;
+import com.jie.de.model.dto.PasswordUpdateDTO;
 import com.jie.de.model.dto.UserInfoDTO;
 import com.jie.de.model.entity.User;
 import com.jie.de.repository.UserRepository;
@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public ResponseEntity<?> changeUserInfo(Long userId, BasicInfoChangeDTO basicInfoChangeDTO) {
+    public ResponseEntity<?> changeUserInfo(Long userId, BasicInfoUpdateDTO basicInfoUpdateDTO) {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String currentUsername = authentication.getName();
@@ -83,8 +83,8 @@ public class UserServiceImpl implements UserService {
                 }
             }
 
-            targetUser.setEmail(basicInfoChangeDTO.getEmail());
-            targetUser.setPhone(basicInfoChangeDTO.getPhone());
+            targetUser.setEmail(basicInfoUpdateDTO.getEmail());
+            targetUser.setPhone(basicInfoUpdateDTO.getPhone());
 
             return ResponseEntity.ok(targetUser);
         } catch (Exception e) {
@@ -94,25 +94,25 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public String changeUserPassword(PasswordChangeDTO passwordChangeDTO){
+    public String changeUserPassword(PasswordUpdateDTO passwordUpdateDTO){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
 
         User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("该用户不存在" + username));
 
-        if(!passwordEncoder.matches(passwordChangeDTO.getCurrentPassword(), user.getPassword())) {
+        if(!passwordEncoder.matches(passwordUpdateDTO.getCurrentPassword(), user.getPassword())) {
             throw new RuntimeException("当前密码输入错误");
         }
 
-        if(!passwordChangeDTO.getConfirmPassword().equals(passwordChangeDTO.getNewPassword())) {
+        if(!passwordUpdateDTO.getConfirmPassword().equals(passwordUpdateDTO.getNewPassword())) {
             throw new RuntimeException("新密码和确认密码不相同");
         }
 
-        if(passwordEncoder.matches(passwordChangeDTO.getNewPassword(), user.getPassword())) {
+        if(passwordEncoder.matches(passwordUpdateDTO.getNewPassword(), user.getPassword())) {
             throw new RuntimeException("新密码不能与原密码相同");
         }
 
-        user.setPassword(passwordEncoder.encode(passwordChangeDTO.getNewPassword()));
+        user.setPassword(passwordEncoder.encode(passwordUpdateDTO.getNewPassword()));
         userRepository.save(user);
 
         return "密码修改成功";

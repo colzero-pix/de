@@ -1,9 +1,7 @@
 package com.jie.de.controller;
 
 import com.jie.de.exception.UserIdAlreadyExistsException;
-import com.jie.de.model.dto.AdminUserInfoDTO;
-import com.jie.de.model.dto.RegisterDTO;
-import com.jie.de.model.dto.ResetPasswordDTO;
+import com.jie.de.model.dto.*;
 import com.jie.de.model.entity.Course;
 import com.jie.de.model.entity.User;
 import com.jie.de.service.admin.Impl.AdminServiceImpl;
@@ -45,13 +43,13 @@ public class adminController {
 
     //删除用户
     @DeleteMapping("/deleteUser/{userId}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
+    public ResponseEntity<?> deleteUser(@PathVariable Long userId) {
         adminServiceImpl.deleteUser(userId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("用户删除成功");
     }
 
     //修改用户信息（班级，学院）
-    @PutMapping("/infoChange/{userId}")
+    @PutMapping("/infoUpdate/{userId}")
     public ResponseEntity<?> updateUserInfo(@PathVariable(name = "userId") Long userId, @RequestBody AdminUserInfoDTO adminUserInfoDTO) {
         return adminServiceImpl.changeUserInfo(userId, adminUserInfoDTO);
     }
@@ -73,28 +71,35 @@ public class adminController {
         return adminServiceImpl.getUserInfo(userId);
     }
 
-
-
     //添加课程
-    @PostMapping
-    public ResponseEntity<Course> addCourse(@RequestBody Course course) {
-        Course savedCourse = courseService.addCourse(course);
-        return ResponseEntity.ok(savedCourse);
+    @PostMapping("/addCourse")
+    public ResponseEntity<?> addCourse(@RequestBody CourseAddDTO courseAddDTO) {
+        Course savedCourse = courseService.addCourse(courseAddDTO);
+        return ResponseEntity.ok("课程添加成功");
     }
 
     //删除课程
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCourse(@PathVariable Long id) {
+    @DeleteMapping("/deleteCourse/{id}")
+    public ResponseEntity<?> deleteCourse(@PathVariable Long id) {
         courseService.deleteCourse(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("课程删除成功");
+    }
+
+    //修改课程信息
+    @PutMapping("/updateCourse/{id}")
+    public ResponseEntity<?> updateCourse(@PathVariable Long id, @RequestBody CourseUpdateDTO courseUpdateDTO) {
+        Course updatedCourse = courseService.updateCourse(id, courseUpdateDTO);
+        return ResponseEntity.ok("课程修改成功");
     }
 
     //通过课程ID获取课程信息
-    @GetMapping("/{id}")
-    public ResponseEntity<Course> getCourseById(@PathVariable Long id) {
+    @GetMapping("/courseInfo/{id}")
+    public ResponseEntity<?> getCourseById(@PathVariable Long id) {
         return courseService.getCourseById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+
 
 }
