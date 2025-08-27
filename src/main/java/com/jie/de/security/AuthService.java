@@ -45,7 +45,7 @@ public class AuthService {
 
             String jwt = jwtUtil.generateToken(loginDTO.getUsername());
 
-            return new LoginResponseDTO(jwt, "登录成功", user.getUsername(), user.getUserId());
+            return new LoginResponseDTO(jwt, "登录成功", user.getUsername(), user.getUserId(), user.getRole());
 
         }catch (BadCredentialsException e) {
             throw new UnauthorizedAccessException("用户名或者密码错误");
