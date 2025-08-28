@@ -15,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/admin")
 public class adminController {
@@ -109,6 +111,13 @@ public class adminController {
         return courseService.getCourseById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    //获取所有课程信息
+    @GetMapping("/getAllCourseInfo")
+    public ResponseEntity<List<Course>> getAllCoursesInfo() {
+        List<Course> courses = courseService.getAllCourses();
+        return ResponseEntity.ok(courses);
     }
 
 

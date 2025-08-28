@@ -43,6 +43,12 @@ public class CourseService {
                 .toList();
     }
 
+    // 获取所有课程信息
+    public List<Course> getAllCourses() {
+        return courseRepository.findAll();
+    }
+
+
 
     public Optional<Course> getCourseById(Long id) {
         return courseRepository.findById(id);
